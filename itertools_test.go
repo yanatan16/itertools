@@ -41,11 +41,11 @@ func testIterEq(t *testing.T, it1, it2 Iter) {
 }
 
 func TestCount(t *testing.T) {
-	testIter(t, Int(1,2,3,4,5,6,7,8,9), Count(1))
+	testIter(t, New(1,2,3,4,5,6,7,8,9), Count(1))
 }
 
 func TestCycle(t *testing.T) {
-	testIter(t, String("a", "b", "ccc", "a", "b", "ccc", "a"), Cycle(String("a", "b", "ccc")))
+	testIter(t, New("a", "b", "ccc", "a", "b", "ccc", "a"), Cycle(New("a", "b", "ccc")))
 }
 
 func TestRepeat(t *testing.T) {
@@ -57,23 +57,19 @@ func TestChain(t *testing.T) {
 	testIterEq(t, Int32(1,2,3,4,5,5,4,3,2,1,100), Chain(Int32(1,2,3,4,5), Int32(5,4,3,2,1), Int32(100)))
 }
 
-func TestCompress(t *testing.T) {
-	testIter(t, Int(1,3,4,6), Compress(Count(0), Bool(false, true, false, true, true, false, true)))
-}
-
 
 func TestDropWhile(t *testing.T) {
 	pred := func (i interface{}) bool {
 		return i.(int) < 10
 	}
-	testIter(t, Int(10,11,12,13,14,15), DropWhile(pred, Count(0)))
+	testIter(t, New(10,11,12,13,14,15), DropWhile(pred, Count(0)))
 }
 
 func TestTakeWhile(t *testing.T) {
 	pred := func (i interface{}) bool {
 		return i.(string)[:3] == "abc"
 	}
-	testIterEq(t, String("abcdef", "abcdaj"), TakeWhile(pred, Cycle(String("abcdef", "abcdaj", "ajcde"))))
+	testIterEq(t, New("abcdef", "abcdaj"), TakeWhile(pred, Cycle(New("abcdef", "abcdaj", "ajcde"))))
 }
 
 func TestFilter(t *testing.T) {
@@ -85,16 +81,16 @@ func TestFilter(t *testing.T) {
 }
 
 func TestSlice(t *testing.T) {
-	testIter(t, Int(5,6,7,8,9,10), Slice(Count(0), 5))
-	testIterEq(t, Int(2,3,4,5,6,7,8), Slice(Count(0), 2, 9))
-	testIterEq(t, Int(3,6,9), Slice(Count(0), 3, 11, 3))
+	testIter(t, New(5,6,7,8,9,10), Slice(Count(0), 5))
+	testIterEq(t, New(2,3,4,5,6,7,8), Slice(Count(0), 2, 9))
+	testIterEq(t, New(3,6,9), Slice(Count(0), 3, 11, 3))
 }
 
 func TestMap(t *testing.T) {
 	mapper := func (i interface{}) interface{} {
 		return len(i.(string))
 	}
-	testIterEq(t, Int(1,2,3,4), Map(mapper, String("a", "ab", "abc", "abcd")))
+	testIterEq(t, New(1,2,3,4), Map(mapper, New("a", "ab", "abc", "abcd")))
 }
 
 func TestMultiMap(t *testing.T) {
@@ -110,14 +106,10 @@ func TestMultiMap(t *testing.T) {
 
 func TestZip(t *testing.T) {
 	a, b, c := []interface{}{1,"a"}, []interface{}{2,nil}, []interface{}{3,nil}
-	test1, test2 := make(Iter, 1), make(Iter, 3)
-	test1 <- a
-	test2 <- a; test2 <- b; test2 <- c
-	close(test1)
-	close(test2)
+	test1, test2 := New(a), New(a,b,c)
 
-	testIterEq(t, test1, Zip(Count(1), String("a")))
-	testIterEq(t, test2, ZipLongest(Slice(Count(1), 0, 3), String("a")))
+	testIterEq(t, test1, Zip(Count(1), New("a")))
+	testIterEq(t, test2, ZipLongest(Slice(Count(1), 0, 3), New("a")))
 }
 
 func TestStarmap(t *testing.T) {
@@ -128,7 +120,7 @@ func TestStarmap(t *testing.T) {
 		}
 		return s
 	}
-	testIterEq(t, Int(10, 20, 30), Starmap(multiMapper, Zip(Int(1,2,3), Repeat(10, 3))))
+	testIterEq(t, New(10, 20, 30), Starmap(multiMapper, Zip(New(1,2,3), Repeat(10, 3))))
 }
 
 func TestReduce(t *testing.T) {

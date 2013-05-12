@@ -21,28 +21,6 @@ func New(els ... interface{}) Iter {
 	return c
 }
 
-func Int(els ... int) Iter {
-	c := make(Iter)
-	go func () {
-		for _, el := range els {
-			c <- el
-		}
-		close(c)
-	}()
-	return c
-}
-
-func Bool(els ... bool) Iter {
-	c := make(Iter)
-	go func () {
-		for _, el := range els {
-			c <- el
-		}
-		close(c)
-	}()
-	return c
-}
-
 func Int64(els ... int64) Iter {
 	c := make(Iter)
 	go func () {
@@ -119,17 +97,6 @@ func Uint32(els ... uint32) Iter {
 	return c
 }
 
-func String(els ... string) Iter {
-	c := make(Iter)
-	go func () {
-		for _, el := range els {
-			c <- el
-		}
-		close(c)
-	}()
-	return c
-}
-
 // Count from i to infinity
 func Count(i int) Iter {
 	c := make(Iter)
@@ -177,26 +144,6 @@ func Chain(its ...Iter) Iter {
 		for _, it := range its {
 			for el := range it {
 				c <- el
-			}
-		}
-		close(c)
-	}()
-	return c
-}
-
-// Elements when selEl == true
-// sel elements should be castable to bool
-// If the element cannot be cast to bool, it will be treated as a false
-func Compress(it Iter, sel Iter) Iter {
-	c := make(Iter)
-	go func() {
-		for el := range it {
-			if yes, ok := <- sel; ok {
-				if show, ok2 := yes.(bool); ok2 && show {
-					c <- el
-				}
-			} else if !ok {
-				break
 			}
 		}
 		close(c)
