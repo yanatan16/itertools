@@ -7,32 +7,32 @@ Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16
 # Implemented Functions
 
 - Infinite Iterator Creators
-		- `Count(i)` - Infinite count from i
-		- `Cycle(it)` - Infinite cycling of it (requires memory)
-		- `Repeat(element [, n])` - Repeat element n times (or infinitely)
+    - `Count(i)` - Infinite count from i
+    - `Cycle(it)` - Infinite cycling of it (requires memory)
+    - `Repeat(element [, n])` - Repeat element n times (or infinitely)
 - Finite Iterator Creators
-		- `New(elements ...)` - Create from `interface{}` elements
-		- `Int32(elements ...)` - Create from `int32` elements
-		- `Int64(elements ...)` - Create from `int64` elements
-		- `Uint(elements ...)` - Create from `uint` elements
-		- `Uint32(elements ...)` - Create from `uint32` elements
-		- `Uint64(elements ...)` - Create from `uint64` elements
-		- `Float32(elements ...)` - Create from `float32` elements
-		- `Float64(elements ...)` - Create from `float64` elements
+    - `New(elements ...)` - Create from `interface{}` elements
+    - `Int32(elements ...)` - Create from `int32` elements
+    - `Int64(elements ...)` - Create from `int64` elements
+    - `Uint(elements ...)` - Create from `uint` elements
+    - `Uint32(elements ...)` - Create from `uint32` elements
+    - `Uint64(elements ...)` - Create from `uint64` elements
+    - `Float32(elements ...)` - Create from `float32` elements
+    - `Float64(elements ...)` - Create from `float64` elements
 - Iterator Modifiers
-		- `Chain(iters...)` - Chain together multiple iterators
-		- `DropWhile(predicate, iter)` - Drop elements until `predicate(el) == false`
-		- `TakeWhile(predicate, iter)` - Take elements until `predicate(el) == false`
-		- `Filter(predicate, iter)` - Filter out elements when `predicate(el) == false`
-		- `FilterFalse(predicate, iter)` - Filter out elements when `predicate(el) == true`
-		- `Slice(iter, start[, stop[, step]])` - Drop elements until the start (0-based index). Stop upon stop (exclusive) unless not given. Step is 1 unless given.
-		- `Map(mapper, iter)` - Map the iterator
-		- `MultiMap(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on shortest iterator.
-		- `MultiMapLongest(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on longest iterator. Shorter iterators are filled with `nil` after they are exhausted.
-		- `Starmap(multiMapper, iter)` - If iter is an iterator of `[]interface{}`, then expand it into the `multiMapper`.
-		- `Zip(iters...)` - Zip multiple iterators together
-		- `ZipLongest(iters...)` - Zip multiple iterators together. Take the longest. Shorter ones are appended with `nil`.
-		- `Reduce(iter, reducer, memo)` - Reduce (or Foldl) across the iterator.
+    - `Chain(iters...)` - Chain together multiple iterators
+    - `DropWhile(predicate, iter)` - Drop elements until `predicate(el) == false`
+    - `TakeWhile(predicate, iter)` - Take elements until `predicate(el) == false`
+    - `Filter(predicate, iter)` - Filter out elements when `predicate(el) == false`
+    - `FilterFalse(predicate, iter)` - Filter out elements when `predicate(el) == true`
+    - `Slice(iter, start[, stop[, step]])` - Drop elements until the start (0-based index). Stop upon stop (exclusive) unless not given. Step is 1 unless given.
+    - `Map(mapper, iter)` - Map the iterator
+    - `MultiMap(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on shortest iterator.
+    - `MultiMapLongest(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on longest iterator. Shorter iterators are filled with `nil` after they are exhausted.
+    - `Starmap(multiMapper, iter)` - If iter is an iterator of `[]interface{}`, then expand it into the `multiMapper`.
+    - `Zip(iters...)` - Zip multiple iterators together
+    - `ZipLongest(iters...)` - Zip multiple iterators together. Take the longest. Shorter ones are appended with `nil`.
+    - `Reduce(iter, reducer, memo)` - Reduce (or Foldl) across the iterator.
 
 # License
 
