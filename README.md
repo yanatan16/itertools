@@ -39,6 +39,9 @@ Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16
 - `Filter(predicate, iter)` - Filter out elements when `predicate(el) == false`
 - `FilterFalse(predicate, iter)` - Filter out elements when `predicate(el) == true`
 - `Slice(iter, start[, stop[, step]])` - Drop elements until the start (0-based index). Stop upon stop (exclusive) unless not given. Step is 1 unless given.
+
+## More Iterator Modifiers
+
 - `Map(mapper, iter)` - Map the iterator
 - `MultiMap(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on shortest iterator.
 - `MultiMapLongest(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on longest iterator. Shorter iterators are filled with `nil` after they are exhausted.
