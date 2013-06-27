@@ -4,7 +4,9 @@ theme: night
 transition: fade
 -->
 
-# Itertools for golang  [![Build Status](https://travis-ci.org/yanatan16/itertools.png?branch=master)](http://travis-ci.org/yanatan16/itertools)
+# Itertools for golang 
+
+[![Build Status](https://travis-ci.org/yanatan16/itertools.png?branch=master)](http://travis-ci.org/yanatan16/itertools)
 
 This package is a translation of the python `itertools` module. It includes all the usual suspects except Tee and including Reduce. All iterators are `chan interface{}` which allows some type ambiguity for these generic functions. It would be completely ok, however, to reproduce these functions in your package for your type-specific iterators such as `chan MyStruct`. I did this mostly as a thought exercise on converting python generators to Go.
 
