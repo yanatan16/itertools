@@ -101,6 +101,14 @@ func Uint32(els ... uint32) Iter {
 	return c
 }
 
+func List(it Iter) []interface{} {
+	arr := make([]interface{}, 0, 1)
+	for el := range it {
+		arr = append(arr, el)
+	}
+	return arr
+}
+
 // Count from i to infinity
 func Count(i int) Iter {
 	c := make(Iter)
@@ -392,7 +400,8 @@ func Reduce(it Iter, red Reducer, memo interface{}) interface{} {
 	return memo
 }
 
-// Tee an iterator into two
+// Split an iterator into n multiple iterators
+// Requires memory to keep values for n iterators
 func Tee(it Iter, n int) []Iter {
 	deques := make([][]interface{}, n)
 	iters := make([]Iter, n)
@@ -430,6 +439,7 @@ func Tee(it Iter, n int) []Iter {
 	return iters
 }
 
+// Helper to tee just into two iterators
 func Tee2(it Iter) (Iter, Iter) {
 	iters := Tee(it, 2)
 	return iters[0], iters[1]

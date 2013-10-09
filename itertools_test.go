@@ -40,6 +40,14 @@ func testIterEq(t *testing.T, it1, it2 Iter) {
 	t.Log("Stop")
 }
 
+
+func TestList(t *testing.T) {
+	list := List(New(1,2,3))
+	if !reflect.DeepEqual(list, []interface{}{1,2,3}) {
+		t.Error("List didn't make a list", list)
+	}
+}
+
 func TestCount(t *testing.T) {
 	testIter(t, New(1,2,3,4,5,6,7,8,9), Count(1))
 }
@@ -144,8 +152,6 @@ func TestTee2(t *testing.T) {
 	it1, it2 = Tee2(New(1,2,3,4,5,6))
 	testIterEq(t, New(1,2,3,4,5,6), it1)
 	testIterEq(t, New(1,2,3,4,5,6), it2)
-
-
 }
 
 func TestTee(t *testing.T) {
