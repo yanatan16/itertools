@@ -4,6 +4,10 @@
 // feel free to copy the code to your project to be implemented with more specific types.
 package itertools
 
+import (
+	"sync"
+)
+
 type Iter chan interface{}
 type Predicate func (interface{}) bool
 type Mapper func (interface{}) interface{}
@@ -386,4 +390,47 @@ func Reduce(it Iter, red Reducer, memo interface{}) interface{} {
 		memo = red(memo, el)
 	}
 	return memo
+}
+
+// Tee an iterator into two
+func Tee(it Iter, n int) []Iter {
+	deques := make([][]interface{}, n)
+	iters := make([]Iter, n)
+	for i := 0; i < n; i++ {
+		iters[i] = make(Iter)
+	}
+
+	mutex := new(sync.Mutex)
+
+	gen := func(myiter Iter, i int) {
+		for {
+			if len(deques[i]) == 0 {
+				mutex.Lock()
+				if len(deques[i]) == 0 {
+					if newval, ok := <- it; ok {
+						for i, d := range deques {
+							deques[i] = append(d, newval)
+						}
+					} else {
+						mutex.Unlock()
+						close(myiter)
+						break
+					}
+				}
+				mutex.Unlock()
+			}
+			var popped interface{}
+			popped, deques[i] = deques[i][0], deques[i][1:]
+			myiter <- popped
+		}
+	}
+	for i, iter := range iters {
+		go gen(iter, i)
+	}
+	return iters
+}
+
+func Tee2(it Iter) (Iter, Iter) {
+	iters := Tee(it, 2)
+	return iters[0], iters[1]
 }

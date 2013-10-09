@@ -131,3 +131,30 @@ func TestReduce(t *testing.T) {
 		t.Error("Sum Reduce failed")
 	}
 }
+
+func TestTee2(t *testing.T) {
+	it1, it2 := Tee2(New(5,4,3,2,1))
+	for i := range it1 {
+		j := <- it2
+		if i != j {
+			t.Error("Tees are not coming off equal")
+		}
+	}
+
+	it1, it2 = Tee2(New(1,2,3,4,5,6))
+	testIterEq(t, New(1,2,3,4,5,6), it1)
+	testIterEq(t, New(1,2,3,4,5,6), it2)
+
+
+}
+
+func TestTee(t *testing.T) {
+	its := Tee(New(3,4,5), 3)
+	if len(its) != 3 {
+		t.Error("its length wrong")
+	}
+	for _, it := range its {
+		testIter(t, New(3,4,5), it)
+	}
+}
+
