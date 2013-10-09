@@ -8,7 +8,7 @@ transition: fade
 
 [Travis Build](http://travis-ci.org/yanatan16/itertools) ![Build Status](https://travis-ci.org/yanatan16/itertools.png?branch=master)
 
-This package is a translation of the python `itertools` module. It includes all the usual suspects. All iterators are `chan interface{}` which allows some type ambiguity for these generic functions. It would be completely ok, however, to reproduce these functions in your package for your type-specific iterators such as `chan MyStruct`. I did this mostly as a thought exercise on converting python generators to Go.
+This package is a translation of the python `itertools` module. It includes all the usual suspects except for the cartesian product and permutation operators. All iterators are `chan interface{}` which allows some type ambiguity for these generic functions. It would be completely ok, however, to reproduce these functions in your package for your type-specific iterators such as `chan MyStruct`. I did this mostly as a thought exercise on converting python generators to Go.
 
 Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16/itertools).
 
@@ -31,6 +31,11 @@ Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16
 - `Float32(elements ...)` - Create from `float32` elements
 - `Float64(elements ...)` - Create from `float64` elements
 
+## Iterator Destroyers
+
+- `Reduce(iter, reducer, memo)` - Reduce (or Foldl) across the iterator.
+- `List(iter)` - Create a list from the iterator
+
 ## Iterator Modifiers
 
 - `Chain(iters...)` - Chain together multiple iterators
@@ -42,13 +47,14 @@ Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16
 
 ## More Iterator Modifiers
 
-- `Map(mapper, iter)` - Map the iterator
-- `MultiMap(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on shortest iterator.
-- `MultiMapLongest(multiMapper, iters...)` - Map all the iterators as `multiMap(elements...)`. Stop on longest iterator. Shorter iterators are filled with `nil` after they are exhausted.
-- `Starmap(multiMapper, iter)` - If iter is an iterator of `[]interface{}`, then expand it into the `multiMapper`.
+- `Map(mapper func(interface{}) interface{}, iter)` - Map each element to `mapper(el)`
+- `MultiMap(multiMapper func(interface{}...)interface{}, iters...)` - Map all the iterators as variadic arguments to `multiMaper(elements...)`. Stop on shortest iterator.
+- `MultiMapLongest(multiMapper func(interface{}...)interface{}, iters...)` - Same as MultiMap except stop on longest iterator. Shorter iterators are filled with `nil` after they are exhausted.
+- `Starmap(multiMapper func(interface{}...)interface{}, iter)` - If iter is an iterator of `[]interface{}`, then expand it into the `multiMapper`.
 - `Zip(iters...)` - Zip multiple iterators together
 - `ZipLongest(iters...)` - Zip multiple iterators together. Take the longest. Shorter ones are appended with `nil`.
-- `Reduce(iter, reducer, memo)` - Reduce (or Foldl) across the iterator.
+- `Tee(iter, n)` - Split an iterator into n equal versions.
+- `Tee2(iter)` - Split an iterator into two equal versions
 
 # License
 
