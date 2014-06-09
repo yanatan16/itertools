@@ -6,7 +6,7 @@ transition: fade
 
 # Itertools for golang
 
-[Travis Build](http://travis-ci.org/yanatan16/itertools) ![Build Status](https://travis-ci.org/yanatan16/itertools.png?branch=master)
+[![Build Status](https://travis-ci.org/yanatan16/itertools.png?branch=master)](http://travis-ci.org/yanatan16/itertools)
 
 This package is a translation of the python `itertools` module. It includes all the usual suspects except for the cartesian product and permutation operators. All iterators are `chan interface{}` which allows some type ambiguity for these generic functions. It would be completely ok, however, to reproduce these functions in your package for your type-specific iterators such as `chan MyStruct`. I did this mostly as a thought exercise on converting python generators to Go.
 
@@ -55,6 +55,23 @@ Full documentation is available on [godoc](http://godoc.org/github.com/yanatan16
 - `ZipLongest(iters...)` - Zip multiple iterators together. Take the longest. Shorter ones are appended with `nil`.
 - `Tee(iter, n)` - Split an iterator into n equal versions.
 - `Tee2(iter)` - Split an iterator into two equal versions
+
+
+## Benchmarks
+
+```
+BenchmarkFilter   200000         41188 ns/op
+BenchmarkNoFilter    5000000           640 ns/op
+BenchmarkMap       10000        108577 ns/op
+BenchmarkNoMap  10000000           321 ns/op
+BenchmarkReduce  1000000          1962 ns/op
+BenchmarkNoReduce   100000000           22.0 ns/op
+```
+
+Clearly this package is much slower than doing just the original operations. However, all large systems inevitably involve abstractions and layers of indirection which are convinient while adding overhead. A system designer should think carefully before choosing one over the other. To be clear, this package was written as a thought experiment, and while usable, might represent a pattern to be rewritten using your types in your project to save the cost of typecasting overhead.
+
+
+Thanks to [damienklinnert](/damienklinnert) for the benchmarks.
 
 # License
 
