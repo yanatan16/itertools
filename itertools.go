@@ -349,19 +349,18 @@ func Starmap(fn MultiMapper, it Iter) Iter {
 func Zip(its ...Iter) Iter {
 	c := make(Iter)
 	go func() {
-Outer:
+		defer close(c)
 		for {
 			els := make([]interface{}, len(its))
 			for i, it := range its {
 				if el, ok := <- it; ok {
 					els[i] = el
 				} else {
-					break Outer
+					return
 				}
 			}
 			c <- els
 		}
-		close(c)
 	}()
 	return c
 }
